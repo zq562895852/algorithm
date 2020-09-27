@@ -74,6 +74,7 @@ class Tree {
   breadth_travel() {
     //   广度遍历和添加操作是一致的
     if (!this.root) return;
+    //队列是广度优先遍历
     const queue = [this.root];
     while (queue.length) {
       const cur_node = queue.shift();
@@ -94,8 +95,8 @@ class Tree {
     this.preorder(node.leftChild);
     this.preorder(node.rightChild);
   }
-  // 前序遍历非递归版
-  preorderTraver(root) {
+  // 深度优先遍历非递归版
+  deepOrderTraver(root) {
     // 存放遍历结果
     const list = [];
     //  临时存储元素的栈
@@ -131,7 +132,38 @@ class Tree {
     this.postorder(node.rightChild);
     console.log(node.ele);
   }
+  // N叉树后续遍历，利用栈遍历
+  postorder(root) {
+    if (root === null) {
+      return [];
+    }
+    const res = [];
+    const arr = [root];
+    while (arr.length) {
+      const cur = arr.pop();
+      res.push(cur.val);
+      for (let i = cur.children.length - 1; i >= 0; i--) {
+        arr.push(cur.children[i]);
+      }
+    }
+    return res.reverse();
+  }
+  // 翻转二叉树
+  invertTree(root) {
+    function traversal(root) {
+      if (root === null) {
+        return null;
+      } else {
+        [root.left, root.right] = [traversal(root.right), traversal(root.left)];
+        return root;
+      }
+    }
+    return traversal(root);
+  }
 }
+
+// 使用栈结构就可以实现深度优先遍历
+// 使用对列就可以实现广度优先遍历
 
 /**
  * 先序遍历：根->左->右
